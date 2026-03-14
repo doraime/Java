@@ -1,55 +1,84 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Main {
-  public static void main(String[] args) {
-    String text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    
-    String bestCase = "A";
+    public static void main(String[] args) {
+      System.out.println("Unsorted Array ---------------------------------------------------");
+      ArrayList<Integer> integerList = Lab4.getList();
+      Lab4.outputList(integerList);
 
-    // * Initialize startTime here
-    int index = match(text, bestCase);
-    // * Initialize endTime here
-    // * Calculate elapsedTime here
-    
-    if (index >= 0)
-      System.out.println("best-case input matched at index " + index);
-    else
-      System.out.println("best-case input unmatched");   
+      System.out.println("\n\nBubble sort results ----------------------------------------------");
+      long startTimeBubble = System.nanoTime();
+      ArrayList<Integer> bubbleSortedList = Lab4.bubbleSort(integerList);
+      long endTimeBubble = System.nanoTime();
+      long durationBubble = endTimeBubble - startTimeBubble;
+      System.out.println("Bubble Sort Time: " + durationBubble + " nanoseconds");
+      Lab4.outputList(bubbleSortedList);
 
-    String worstCase = "?";
-    
-    // * Initialize startTime here
-    long startTime = System.nanoTime();
-    index = match(text, worstCase);
-    // * Initialize endTime here
-    long endTime = System.nanoTime();
-    // * Calculate elapsedTime here
-    long elapsedTime = endTime - startTime;
-    System.out.println("Elapsed time for worst-case input: " + elapsedTime + " nanoseconds");
-    
-    if (index >= 0)
-      System.out.println("worst-case input matched at index " + index);
-    else
-      System.out.println("worst-case input unmatched");  
+      System.out.println("\n\nInsertion sort results -------------------------------------------");
+      long startTimeInsertion = System.nanoTime();
+      ArrayList<Integer> insertionSortedList = Lab4.insertionSort(integerList);
+      long endTimeInsertion = System.nanoTime();
+      long durationInsertion = endTimeInsertion - startTimeInsertion;
+      System.out.println("Insertion Sort Time: " + durationInsertion + " nanoseconds");
+      Lab4.outputList(insertionSortedList);
+    }
+}
+
+class Lab4 {
+  public static ArrayList<Integer> insertionSort(ArrayList<Integer> integerList) {
+    // Step 1 - Implement insertion sort algorithm here
+
+    for (int i = 1; i < integerList.size(); i++) {
+        int key = integerList.get(i);
+        int j = i - 1;
+
+        // Move elements of integerList[0..i-1], that are greater than key,
+        // to one position ahead of their current position
+        while (j >= 0 && integerList.get(j) > key) {
+            integerList.set(j + 1, integerList.get(j));
+            j = j - 1;
+        }
+        integerList.set(j + 1, key);
+    }
+    return integerList;
   }
 
-  // Return the index of the first match. -1 otherwise.
-  public static int match(String text, String pattern) {
-    for (int i = 0; i < text.length() - pattern.length() + 1; i++) {
-      if (isMatched(i, text, pattern))
-        return i;
-    }
+  public static ArrayList<Integer> bubbleSort(ArrayList<Integer> integerList) {
+    // Step 2 - Implement the bubble sort algorithm here
 
-    return -1;
-  }
-	
-  // Test if pattern matches text starting at index i
-  private static boolean isMatched(int i, String text, 
-      String pattern) {
-    for (int k = 0; k < pattern.length(); k++) {
-      if (pattern.charAt(k) != text.charAt(i + k)) {
-        return false;
-      }
+    int n = integerList.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (integerList.get(j) > integerList.get(j + 1)) {
+                // Swap elements
+                int temp = integerList.get(j);
+                integerList.set(j, integerList.get(j + 1));
+                integerList.set(j + 1, temp);
+            }
+        }
     }
-    
-    return true;
+    return integerList;
+  }
+
+  public static ArrayList<Integer> getList() {
+    ArrayList<Integer> integerList = new ArrayList<>();
+    String line;
+    try (BufferedReader br = new BufferedReader(new FileReader("integers.txt"))) {
+        while ((line = br.readLine()) != null) {
+            integerList.add(Integer.parseInt(line));
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return integerList;
+  }
+
+  public static void outputList(ArrayList<Integer> integerList) {
+    for (int i = 0; i < integerList.size(); i++) {
+        System.out.print(integerList.get(i) + " ");
+    }
   }
 }

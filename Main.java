@@ -1,84 +1,21 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
-public class Main {
-    public static void main(String[] args) {
-      System.out.println("Unsorted Array ---------------------------------------------------");
-      ArrayList<Integer> integerList = Lab4.getList();
-      Lab4.outputList(integerList);
-
-      System.out.println("\n\nBubble sort results ----------------------------------------------");
-      long startTimeBubble = System.nanoTime();
-      ArrayList<Integer> bubbleSortedList = Lab4.bubbleSort(integerList);
-      long endTimeBubble = System.nanoTime();
-      long durationBubble = endTimeBubble - startTimeBubble;
-      System.out.println("Bubble Sort Time: " + durationBubble + " nanoseconds");
-      Lab4.outputList(bubbleSortedList);
-
-      System.out.println("\n\nInsertion sort results -------------------------------------------");
-      long startTimeInsertion = System.nanoTime();
-      ArrayList<Integer> insertionSortedList = Lab4.insertionSort(integerList);
-      long endTimeInsertion = System.nanoTime();
-      long durationInsertion = endTimeInsertion - startTimeInsertion;
-      System.out.println("Insertion Sort Time: " + durationInsertion + " nanoseconds");
-      Lab4.outputList(insertionSortedList);
-    }
-}
-
-class Lab4 {
-  public static ArrayList<Integer> insertionSort(ArrayList<Integer> integerList) {
-    // Step 1 - Implement insertion sort algorithm here
-
-    for (int i = 1; i < integerList.size(); i++) {
-        int key = integerList.get(i);
-        int j = i - 1;
-
-        // Move elements of integerList[0..i-1], that are greater than key,
-        // to one position ahead of their current position
-        while (j >= 0 && integerList.get(j) > key) {
-            integerList.set(j + 1, integerList.get(j));
-            j = j - 1;
-        }
-        integerList.set(j + 1, key);
-    }
-    return integerList;
-  }
-
-  public static ArrayList<Integer> bubbleSort(ArrayList<Integer> integerList) {
-    // Step 2 - Implement the bubble sort algorithm here
-
-    int n = integerList.size();
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (integerList.get(j) > integerList.get(j + 1)) {
-                // Swap elements
-                int temp = integerList.get(j);
-                integerList.set(j, integerList.get(j + 1));
-                integerList.set(j + 1, temp);
-            }
-        }
-    }
-    return integerList;
-  }
-
-  public static ArrayList<Integer> getList() {
-    ArrayList<Integer> integerList = new ArrayList<>();
-    String line;
-    try (BufferedReader br = new BufferedReader(new FileReader("integers.txt"))) {
-        while ((line = br.readLine()) != null) {
-            integerList.add(Integer.parseInt(line));
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    return integerList;
-  }
-
-  public static void outputList(ArrayList<Integer> integerList) {
-    for (int i = 0; i < integerList.size(); i++) {
-        System.out.print(integerList.get(i) + " ");
-    }
+class Main {
+  public static void main(String[] args) {
+    // Use the instructions in Blackboard or instructions.md to complete Lab 6
+    MyHashMap creditHours = new MyHashMap();
+    creditHours.put("IT-1025", 3);
+    creditHours.put("IT-1050",3);
+    creditHours.put("IT-1150",3);
+    creditHours.put("IT-2310",3);
+    creditHours.put("IT-2320",4);
+    creditHours.put("IT-2351", 4);
+    creditHours.put("IT-2650",4);
+    creditHours.put("IT-2660",4);
+    creditHours.put("IT-2030",4);
+    System.out.println(creditHours.containsKey("IT-1025"));
+    System.out.println(creditHours.containsKey("IT-2110"));
+    System.out.println(creditHours.toString());
+    creditHours.remove("IT-2030");
+    creditHours.remove("IT-1150");
+    System.out.println(creditHours.values());
   }
 }
